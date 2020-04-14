@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot - CacheStats </title>
+    <meta charset="utf-8" />
+    <style>
+       body {
+        font: normal 50px Courier New;
+}
+</style>
+</head>
+<body>
+<h2 align="center" id="titulo">Cache Statistics of this session</h2>
+<p style="color: blue;" align="center">Requests:</p>
+<p th:text="${requests}" id="requests" style="color: blue;" align="center"></p>
+<p style="color: green;" align="center">Hits:</p>
+<p th:text="${hits}" id="hits" style="color: green;" align="center"></p>
+<p style="color: red;" align="center">Misses:</p>
+<p th:text="${misses}" id="misses" style="color: red;" align="center"></p>
+</body>
+
+</html>

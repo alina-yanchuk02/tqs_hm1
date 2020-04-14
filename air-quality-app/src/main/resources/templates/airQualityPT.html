@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Spring Boot - AirQualityPT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/jqueryScript.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <style>
+      div {
+        background: white;
+      }
+      .row_color {
+        background:  #D5D9EE;
+      }
+      body {
+      font-family: Courier New;
+      }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <h1 style="padding-top:50px" id="titulo"><strong>AirQuality in Portugal Today</strong></h1>
+    <h4 style="padding-top:40px"> Cities available: Lisboa, Coimbra, Leiria, Porto, Aveiro, Braga, Viseu and Castelo Branco </h4>
+    <h5 style="padding-top:40px"> Information about Cache Statististics on : tqs/cacheStats </h5>
+    <div class="row col-md-7 " style="padding-top:50px">
+        <div style="margin-bottom:10px; padding:20px; background-color:#a39cf4; color:white;">
+            <p>Insert a value to search and press Enter: <strong>City</strong></p>
+            <input class="form-control" id="input" type="text" />
+        </div>
+        <table id="resultsTable" class="table table-bordered table-hover table-responsive">
+            <thead>
+            <tr>
+
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Unit</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <tr>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+$(document).ready(function() {
+
+    $("#input").on("keyup", function() {
+    if(event.which==13){
+        $("#resultsTable").find("tbody").empty();
+        var inputValue = $(this).val().toLowerCase();
+        inputValue = inputValue.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+    return letter.toUpperCase();
+});
+        $.ajax({
+        type : "GET",
+        url : "/tqs/get/"+inputValue,
+        success: function(result){
+            $.each(result, function(i, results){
+
+                var resultsRow = '<tr>' +
+
+                                    '<td>' + results.parameter + '</td>' +
+                                    '<td>' + results.value + '</td>' +
+                                    '<td>' + results.unit + '</td>' +
+
+
+                                  '</tr>';
+
+                $('#resultsTable tbody').append(resultsRow);
+
+            });
+
+            $( "#resultsTable tbody tr:odd" ).addClass("row_color");
+
+        },
+        error : function(e) {
+            alert("ERROR ", e);
+            console.log("ERROR ", e);
+        }
+    });
+    };
+    });
+})
+
+</script>
+</body>
+</html>
